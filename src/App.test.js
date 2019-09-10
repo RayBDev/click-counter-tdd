@@ -11,7 +11,7 @@ import App from "./App";
  */
 const setup = (props = {}, state = null) => {
   const wrapper = shallow(<App {...props} />);
-  if (state) wrapper.setState({ state });
+  if (state) wrapper.setState(state);
   return wrapper;
 };
 
@@ -49,4 +49,15 @@ test("counter starts at 0", () => {
   expect(initialCounterState).toBe(0);
 });
 
-test("click button increments counter display", () => {});
+test("click button increments counter display", () => {
+  const counter = 7;
+  const wrapper = setup(null, { counter });
+
+  // find button and click
+  const button = findByTestAttr(wrapper, "increment-button");
+  button.simulate("click");
+
+  // find display and test value
+  const counterDisplay = findByTestAttr(wrapper, "counter-display");
+  expect(counterDisplay.text()).toContain(counter + 1);
+});
